@@ -1,0 +1,30 @@
+{
+  "name": "snapcraft-forum",
+  "version": "0.1.0",
+  "description": "Snapcraft Forum Client",
+  "desktopName": "snapcraft-forum_snapcraft-forum.desktop",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/ogra1/snapcraft-forum-client",
+  "keywords": [
+    "Snapcraft",
+    "forum",
+    "client",
+    "snap",
+    "discussion"
+  ],
+  "author": "GitHub",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": ">=9.4.0",
+    "electron-packager": "latest"
+  },
+  "dependencies": {
+    "electron-window-state": "latest",
+    "electron-context-menu": "latest",
+    "electron-store": "latest",
+    "iso-639-1": "latest"
+  }
+}

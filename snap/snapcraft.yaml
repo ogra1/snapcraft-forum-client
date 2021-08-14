@@ -1,0 +1,75 @@
+name: snapcraft-forum
+version: '0.1'
+summary: Snapcraft Frum webapp
+description: |
+  Simple webapp showing the snapcraft forum
+base: core20
+confinement: strict
+grade: devel
+compression: lzo
+
+apps:
+  forum:
+    extensions: [gnome-3-38]
+    command: electron/snapcraft-forum --disable-gpu --no-sandbox
+    environment:
+      TMPDIR: $XDG_RUNTIME_DIR
+      DISABLE_WAYLAND: 1
+    plugs:
+      - audio-playback
+      - audio-record
+      - browser-support
+      - desktop
+      - gsettings
+      - network
+      - network-bind
+      - opengl
+      - unity7
+      - wayland
+      - x11
+
+parts:
+  forum:
+    plugin: nil
+    source: ./electron
+    build-environment:
+      - PATH: "$PATH:$SNAPCRAFT_PART_BUILD/node_modules/.bin"
+    override-build: |
+      set +u # core20 base does not allow unbound variables !
+      # workaround for build.snapcraft.io builds
+      # https://bugs.launchpad.net/bugs/1886861
+      if [ -n "$http_proxy" ]; then
+        export ELECTRON_GET_USE_PROXY=1
+        export GLOBAL_AGENT_HTTP_PROXY="${http_proxy}"
+        export GLOBAL_AGENT_HTTPS_PROXY="${http_proxy}"
+      fi
+
+      npm install
+      electron-packager . --overwrite --platform=linux --output=release-build \
+          --prune=true --out $SNAPCRAFT_PART_INSTALL/
+      mv $SNAPCRAFT_PART_INSTALL/$SNAPCRAFT_PROJECT_NAME-linux-* \
+          $SNAPCRAFT_PART_INSTALL/electron
+      cp icons/*.png $SNAPCRAFT_PART_INSTALL/
+    build-snaps:
+      - node/14/stable
+    stage-packages:
+    - libasound2
+    - libgconf-2-4
+    - libnss3
+    - libunity9 # for badgeCount in dock
+    - libx11-xcb1
+    - libxss1
+    - libxtst6
+  cleanup:
+    after: [ forum ]
+    plugin: nil
+    build-snaps: [ gnome-3-38-2004 ]
+    override-prime: |
+      set -eux
+      cd /snap/gnome-3-38-2004/current
+      find . -type f,l -exec rm -f $SNAPCRAFT_PRIME/{} \;
+      for CRUFT in bug lintian man; do
+        rm -rf $SNAPCRAFT_PRIME/usr/share/$CRUFT
+      done
+      find $SNAPCRAFT_PRIME/usr/share/doc/ -type f -not -name 'copyright' -delete
+      find $SNAPCRAFT_PRIME/usr/share -type d -empty -delete

@@ -163,9 +163,9 @@ app.on('activate', function () {
 
 ipc.on('unread', (event, args) => {
   if (args !== 0) {
-    app.badgeCount = args
+    app.setBadgeCount(args)
     console.log('setting unread messages to:' + args)
   }  else {
-    app.badgeCount = 0
+    app.setBadgeCount(0)
   }
 });

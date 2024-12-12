@@ -2,7 +2,7 @@
 Type=Application
 Name=Snapcraft Forum
 Icon=${SNAP}/meta/gui/icon.png
-Exec=snapcraft-forum.forum
+Exec=snapcraft-forum
 Terminal=false
 StartupWMClass=snapcraft-forum
 Categories=Utility;

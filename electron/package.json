@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Snapcraft Forum Client",
   "desktopName": "snapcraft-forum_snapcraft-forum.desktop",
-  "main": "main.js",
+  "main": "./index.js",
   "scripts": {
     "start": "electron ."
   },
@@ -18,13 +18,13 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "latest",
+    "electron": "^33.2.0",
     "electron-packager": "latest"
   },
   "dependencies": {
-    "electron-window-state": "latest",
-    "electron-context-menu": "latest",
-    "electron-store": "latest",
+    "electron-window-state": "5.0.3",
+    "electron-context-menu": "3.1.1",
+    "electron-store": "8.0.0",
     "iso-639-1": "latest"
   }
 }
